@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:progress_dialog/progress_dialog.dart';
+
 class GeraOrdemOr extends StatefulWidget {
   @override
   _GeraOrdemOrState createState() => _GeraOrdemOrState();
@@ -30,6 +32,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
   String _num_osr = "";
   String _mensagem = "";
   String _uidcriador = "";
+  ProgressDialog pr;
 
   //padrão de TextStyle
   _textStyle(double size) {
@@ -55,7 +58,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                 child: Text('Ok'),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.pushReplacementNamed(context, "/home");
+                  Navigator.pushReplacementNamed(context, "/admor");
                 },
               )
             ],
@@ -68,10 +71,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
-              _mensagem,
-                style: _textStyle(13.0)
-            ),
+            title: Text(_mensagem, style: _textStyle(13.0)),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
@@ -84,7 +84,34 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
         });
   }
 
+  _validaCampos() {
+    if (_programacaoController.text.isNotEmpty &&
+        _tipo_ordem != "Tipo da ordem" &&
+        _coord_xController.text.isNotEmpty &&
+        _coord_yController.text.isNotEmpty) {
+      _geraOrdem();
+    } else {
+      _displayDialog_NOk(
+          context,
+          "Campos obrigatórios: Data de programação, "
+          "Tipo da ordem, coordenadas e matrícula ");
+    }
+  }
+
   Future _geraOrdem() async {
+    pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+      message: 'Salvando os dados...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: _textStyle(12.0),
+    );
+
+    pr.show();
     //checa o usuario conectado
     FirebaseAuth auth = FirebaseAuth.instance;
     Firestore db = Firestore.instance;
@@ -92,7 +119,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
     String uid = usuarioLogado.uid;
 
     DocumentSnapshot snapshot =
-    await db.collection("usuarios").document(uid).get();
+        await db.collection("usuarios").document(uid).get();
 
     var _nomeCriador = snapshot.data["nome"].toString();
     var _sobreNomeCriador = snapshot.data["sobrenome"].toString();
@@ -104,7 +131,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
     //checa o numero da ultima ordem
     Firestore db1 = Firestore.instance;
     QuerySnapshot querySnapshot =
-    await db1.collection("OR").getDocuments().then((value) {
+        await db1.collection("OR").getDocuments().then((value) {
       List<int> listaOrdens = List();
       for (DocumentSnapshot item in value.documents) {
         var dados = item.documentID;
@@ -140,19 +167,23 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       ordem.uidcriador = _uidcriador;
 
       Firestore db2 = Firestore.instance;
-      db2.collection("OR").document(_num_osr).setData(ordem.toMap());
-
-      _displayDialog_Ok(
-          context, "Ordem criada com sucesso.");
-      Navigator.pushReplacementNamed(context, "/home");
+      db2
+          .collection("OR")
+          .document(_num_osr)
+          .setData(ordem.toMap())
+          .then((onValue) {
+        pr.hide();
+        _displayDialog_Ok(context, "Ordem criada com sucesso.");
+      });
     }).catchError((error) {
+      pr.hide();
       if (error.toString() == "Bad state: No element") {
         _num_osr = "1";
         _displayDialog_Ok(
             context, "Primeira ordem cadastrada no banco de dados.");
       } else {
         _num_osr = _dataEmissao;
-        _displayDialog_Ok(context, "Erro de conexão, NºOSR = zero");
+        _displayDialog_Ok(context, "Erro de conexão, NºOSR = $_num_osr");
       }
 
       //Salva os dados da ordem
@@ -185,7 +216,11 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       db2
           .collection("OR")
           .document(_num_osr.split("/")[0])
-          .setData(ordem.toMap());
+          .setData(ordem.toMap())
+          .then((onValue) {
+        pr.hide();
+        _displayDialog_Ok(context, "Ordem criada com sucesso.");
+      });
     });
   }
 
@@ -251,7 +286,12 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                       _tipo_ordem,
                       style: _textStyle(11.5),
                     ),
-                    items: <String>['Pendência de Display', 'Pendência de Módulo', 'Pendência de Módulo', "Outros"].map((String value) {
+                    items: <String>[
+                      'Pendência de Display',
+                      'Pendência de Módulo',
+                      'Pendência Cadastral',
+                      "Outros"
+                    ].map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
                         child: new Text(
@@ -437,7 +477,6 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: TextField(
@@ -507,9 +546,10 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                       ),
                       onPressed: () {
                         if (_matriculaController.text.isNotEmpty) {
-                          _geraOrdem();
-                        }else{
-                          _displayDialog_NOk(context, "Preencha a matrícula do executor");
+                          _validaCampos();
+                        } else {
+                          _displayDialog_NOk(
+                              context, "Preencha a matrícula do executor");
                         }
                       }),
                 ),
@@ -517,9 +557,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
             ),
           ),
         ),
-
       ),
-
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:eletricapp/model/Ordem.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,6 @@ class _AexecutarorState extends State<Aexecutaror> {
   static Firestore db = Firestore.instance;
   static String _equipeLogado = "sem equipe";
   bool _isSemEquipe = true;
-
 
   //ALERT DIALOG
   static _displayDialog_Ok(BuildContext context, item) async {
@@ -149,7 +149,7 @@ class _AexecutarorState extends State<Aexecutaror> {
             if (querySnapshot.documents.length == 0) {
               return Card(
                 elevation: 8,
-                color: Color(0xffB5B6B3),
+                color: Color(0xffBDBDBD),
                 borderOnForeground: true,
                 child: Column(
                   children: <Widget>[
@@ -216,7 +216,7 @@ class _AexecutarorState extends State<Aexecutaror> {
 
                         return Card(
                           elevation: 8,
-                          color: Color(0xffB5B6B3),
+                          color: Color(0xffBDBDBD),
                           borderOnForeground: true,
                           child: Column(
                             children: <Widget>[
@@ -300,7 +300,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                       else if(ordens.length==0 && num==1) {
                         return Card(
                           elevation: 8,
-                          color: Color(0xffB5B6B3),
+                          color: Color(0xffBDBDBD),
                           borderOnForeground: true,
                           child: Column(
                             children: <Widget>[
@@ -334,7 +334,7 @@ class _AexecutarorState extends State<Aexecutaror> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var eq = "";
     while (eq == "") {
-      eq = prefs.getString("uid");
+      eq = prefs.getString("uid").split(":")[0];
     }
 
     setState(() {
@@ -369,7 +369,7 @@ class _AexecutarorState extends State<Aexecutaror> {
             child: stream,
             replacement: Card(
               elevation: 8,
-              color: Color(0xffB5B6B3),
+              color: Color(0xffBDBDBD),
               borderOnForeground: true,
               child: Column(
                 children: <Widget>[

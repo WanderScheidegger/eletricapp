@@ -12,6 +12,7 @@ class Usuario {
   String _latitude;
   String _longitude;
   String _time;
+  String _uid;
 
 
   Map<String, dynamic> toMap(){
@@ -27,12 +28,19 @@ class Usuario {
       "latitude" : this._latitude,
       "longitude" : this._longitude,
       "time" : this._time,
+      "uid" : this._uid,
     };
     return map;
   }
 
   Usuario();
 
+
+  String get uid => _uid;
+
+  set uid(String value) {
+    _uid = value;
+  }
 
   String get time => _time;
 

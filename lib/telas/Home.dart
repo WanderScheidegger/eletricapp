@@ -20,7 +20,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   List<String> itensMenu = ["Logout", "ADM"];
   TextEditingController _dialogController = TextEditingController();
   String _textoAalerta = "Digite a senha de Administrador";
-  String _equipeLogado = "sem equipe";
+  String _equipeLogado = "";
+  String _uid = "";
 
 
   _escolhaMenuItem(String itemEscolhido) {
@@ -80,7 +81,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
   }
 
-
   Future _verificarUsuarioLogado() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     FirebaseUser usuarioLogado = await auth.currentUser();
@@ -95,7 +95,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     var geolocator = Geolocator();
     var locationOptions = LocationOptions(
       accuracy: LocationAccuracy.high,
-      timeInterval: 300000,
+      timeInterval: 30000,
     );
     geolocator.getPositionStream( locationOptions )
         .listen((Position position){
@@ -106,6 +106,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         "time": formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy, ' - ', H, ':', nn]).toString()})
           .then((onValue){
         print("localizacao atual: " + position.toString());
+        print("UID: " + _uid);
       });
     });
 
@@ -115,7 +116,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var eq = "";
     while (eq == "") {
-      eq = prefs.getString("uid");
+      eq = prefs.getString("uid").split(":")[1];
     }
 
     setState(() {

@@ -64,7 +64,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
             if (querySnapshot.documents.length == 0) {
               return Card(
                 elevation: 8,
-                color: Color(0xffB5B6B3),
+                color: Color(0xffBDBDBD),
                 borderOnForeground: true,
                 child: Column(
                   children: <Widget>[
@@ -129,7 +129,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
 
                         return Card(
                           elevation: 8,
-                          color: Color(0xffB5B6B3),
+                          color: Color(0xffBDBDBD),
                           borderOnForeground: true,
                           child: Column(
                             children: <Widget>[
@@ -217,7 +217,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                       }else if(ordens.length==0 && num==1){
                         return Card(
                           elevation: 8,
-                          color: Color(0xffB5B6B3),
+                          color: Color(0xffBDBDBD),
                           borderOnForeground: true,
                           child: Column(
                             children: <Widget>[
@@ -250,7 +250,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var eq = "";
     while (eq == "") {
-      eq = prefs.getString("uid");
+      eq = prefs.getString("uid").split(":")[0];
     }
 
     setState(() {
@@ -305,7 +305,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
             child: stream,
             replacement: Card(
               elevation: 8,
-              color: Color(0xffB5B6B3),
+              color: Color(0xffBDBDBD),
               borderOnForeground: true,
               child: Column(
                 children: <Widget>[

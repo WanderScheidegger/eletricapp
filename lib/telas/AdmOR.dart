@@ -1,9 +1,9 @@
+import 'package:eletricapp/telas/Pessoal.dart';
 import 'package:flutter/material.dart';
 
 import 'AdmAexecutaror.dart';
 import 'AdmEmExecucaoor.dart';
 import 'AdmExecutadasor.dart';
-import 'People.dart';
 
 class AdmOR extends StatefulWidget {
   @override
@@ -83,7 +83,7 @@ class _AdmORState extends State<AdmOR> with SingleTickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          People(),
+          Pessoal(),
           AdmAexecutaror(),
           AdmEmExecucaoor(),
           AdmExecutadasor(),
@@ -100,7 +100,7 @@ class _AdmORState extends State<AdmOR> with SingleTickerProviderStateMixin {
               color: Colors.white,
               icon: Icon(Icons.map),
               onPressed: () {
-                Navigator.pushNamed(context, "/track");
+                Navigator.pushNamed(context, "/trackor");
               },
             ),
             IconButton(

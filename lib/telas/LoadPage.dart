@@ -24,7 +24,8 @@ class _LoadPageState extends State<LoadPage> {
           .then((snapshot) {
 
 
-        prefs.setString("uid", snapshot.data['matricula'].toString()).then((onValue){
+        prefs.setString("uid", snapshot.data['matricula'].toString()
+        + ":" + onValue.uid).then((onValue){
 
           Future.delayed(const Duration(milliseconds: 2000), () {
             setState(() {

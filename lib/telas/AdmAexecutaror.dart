@@ -81,7 +81,7 @@ class _AdmAexecutarorState extends State<AdmAexecutaror> {
             if (querySnapshot.documents.length == 0) {
               return Card(
                 elevation: 8,
-                color: Color(0xffB5B6B3),
+                color: Color(0xffBDBDBD),
                 borderOnForeground: true,
                 child: Column(
                   children: <Widget>[
@@ -139,7 +139,7 @@ class _AdmAexecutarorState extends State<AdmAexecutaror> {
 
                       return Card(
                         elevation: 8,
-                        color: Color(0xffB5B6B3),
+                        color: Color(0xffBDBDBD),
                         borderOnForeground: true,
                         child: Column(
                           children: <Widget>[

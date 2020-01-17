@@ -80,7 +80,7 @@ class _AdmEmExecucaoorState extends State<AdmEmExecucaoor> {
             if (querySnapshot.documents.length == 0) {
               return Card(
                 elevation: 8,
-                color: Color(0xffB5B6B3),
+                color: Color(0xffBDBDBD),
                 borderOnForeground: true,
                 child: Column(
                   children: <Widget>[
@@ -138,7 +138,7 @@ class _AdmEmExecucaoorState extends State<AdmEmExecucaoor> {
 
                       return Card(
                         elevation: 8,
-                        color: Color(0xffB5B6B3),
+                        color: Color(0xffBDBDBD),
                         borderOnForeground: true,
                         child: Column(
                           children: <Widget>[

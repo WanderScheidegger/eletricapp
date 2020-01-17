@@ -65,6 +65,7 @@ class _CadastroState extends State<Cadastro> {
         .then((firebaseUser) {
 
           //Salvar dados do usuário
+      usuario.uid = firebaseUser.user.uid;
 
       db
           .collection("usuarios")
@@ -123,10 +124,11 @@ class _CadastroState extends State<Cadastro> {
             usuario.senha = senha;
             usuario.adm = "não";
             usuario.equipe = "sem equipe";
-            usuario.servico = "";
+            usuario.servico = "não atribuído";
             usuario.latitude = "";
             usuario.longitude = "";
             usuario.time = "";
+
 
             pr.show();
 
