@@ -116,10 +116,13 @@ class _AdmAexecutarorState extends State<AdmAexecutaror> {
 
                       Ordem ordem = Ordem();
                       ordem.emissao = item['emissao'];
+                      ordem.inicio = item['inicio'];
+                      ordem.tempo_atend = item['tempo_atend'];
                       ordem.num_osr = item['num_osr'];
                       ordem.programacao = item['programacao'];
                       ordem.obra = item['obra'];
                       ordem.med_antigo = item['med_antigo'];
+                      ordem.med_inst = item['med_inst'];
                       ordem.modulo_cs = item['modulo_cs'];
                       ordem.display_retirado = item['display_retirado'];
                       ordem.display_instalado = item['display_instalado'];
@@ -136,6 +139,9 @@ class _AdmAexecutarorState extends State<AdmAexecutaror> {
                       ordem.matricula = item['matricula'];
                       ordem.status = "Atribuída";
                       ordem.uidcriador = item['uidcriador'];
+                      ordem.execucao = item['execucao'];
+                      ordem.finalizacao = item['finalizacao'];
+
 
                       return Card(
                         elevation: 8,

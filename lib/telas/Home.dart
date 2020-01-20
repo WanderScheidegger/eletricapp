@@ -188,6 +188,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
               text: "Executadas",
             ),
+            /*
+            Tab(
+              icon: Icon(
+                Icons.map,
+                size: 30,
+              ),
+              text: "Roteiro",
+            ),
+            */
           ],
         ),
         actions: <Widget>[
@@ -210,6 +219,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Aexecutaror(),
           EmExecucaoor(),
           Executadasor(),
+          //Rota(),
         ],
       ),
     );

@@ -27,6 +27,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
   TextEditingController _coord_yController = TextEditingController();
   TextEditingController _obs_admController = TextEditingController();
   TextEditingController _matriculaController = TextEditingController();
+  TextEditingController _parceiroController = TextEditingController();
   String _tipo_ordem = "Tipo da ordem";
   String _dataEmissao = formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy]);
   String _num_osr = "";
@@ -145,10 +146,12 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       Ordem ordem = Ordem();
       ordem.emissao = _dataEmissao;
       ordem.inicio = "";
+      ordem.tempo_atend = "";
       ordem.num_osr = _num_osr;
       ordem.programacao = _programacaoController.text;
       ordem.obra = _obraController.text;
       ordem.med_antigo = _med_antigoController.text;
+      ordem.med_inst = "";
       ordem.modulo_cs = _modulo_csController.text;
       ordem.display_retirado = _display_retiradoController.text;
       ordem.display_instalado = "";
@@ -165,6 +168,14 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       ordem.matricula = _matriculaController.text;
       ordem.status = "Atribuída";
       ordem.uidcriador = _uidcriador;
+      ordem.execucao = "";
+      ordem.finalizacao = "";
+
+      if (_parceiroController.text.isNotEmpty){
+        ordem.parceiro = _parceiroController.text;
+      }else{
+        ordem.parceiro = "sem parceiro";
+      }
 
       Firestore db2 = Firestore.instance;
       db2
@@ -191,10 +202,12 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       Ordem ordem = Ordem();
       ordem.emissao = _dataEmissao;
       ordem.inicio = "";
+      ordem.tempo_atend = "";
       ordem.num_osr = _num_osr;
       ordem.programacao = _programacaoController.text;
       ordem.obra = _obraController.text;
       ordem.med_antigo = _med_antigoController.text;
+      ordem.med_inst = "";
       ordem.modulo_cs = _modulo_csController.text;
       ordem.display_retirado = _display_retiradoController.text;
       ordem.display_instalado = "";
@@ -211,6 +224,14 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       ordem.matricula = _matriculaController.text;
       ordem.status = "Atribuída";
       ordem.uidcriador = _uidcriador;
+      ordem.execucao = "";
+      ordem.finalizacao = "";
+
+      if (_parceiroController.text.isNotEmpty){
+        ordem.parceiro = _parceiroController.text;
+      }else{
+        ordem.parceiro = "sem parceiro";
+      }
 
       Firestore db2 = Firestore.instance;
       db2
@@ -520,6 +541,23 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(15),
                       hintText: "Matrícula do executor",
+                      filled: true,
+                      fillColor: Color(0xffB5B6B3),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TextField(
+                    controller: _parceiroController,
+                    keyboardType: TextInputType.text,
+                    style: _textStyle(11.5),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      hintText: "Matrícula do parceiro",
                       filled: true,
                       fillColor: Color(0xffB5B6B3),
                       border: OutlineInputBorder(

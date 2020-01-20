@@ -4,10 +4,13 @@ class Ordem {
 
   String _emissao;
   String _inicio;
+  String _tempo_atend;
   String _num_osr;
   String _programacao;
+  String _finalizacao;
   String _obra;
   String _med_antigo;
+  String _med_inst;
   String _modulo_cs;
   String _display_retirado;
   String _display_instalado;
@@ -24,16 +27,21 @@ class Ordem {
   String _matricula;
   String _status;
   String _uidcriador;
+  String _execucao;
+  String _parceiro;
 
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
       "emissao" : this._emissao,
       "inicio" : this._inicio,
+      "tempo_atend" : this._tempo_atend,
       "num_osr" : this._num_osr,
       "programacao" : this._programacao,
+      "finalizacao" : this._finalizacao,
       "obra" : this._obra,
       "med_antigo" : this._med_antigo,
+      "med_inst" : this._med_inst,
       "modulo_cs" : this._modulo_cs,
       "display_retirado" : this._display_retirado,
       "display_instalado" : this._display_instalado,
@@ -50,6 +58,8 @@ class Ordem {
       "matricula" : this._matricula,
       "status" : this._status,
       "uidcriador" : this._uidcriador,
+      "execucao" : this._execucao,
+      "parceiro" : this._parceiro,
 
     };
     return map;
@@ -57,6 +67,36 @@ class Ordem {
 
   Ordem();
 
+
+  String get parceiro => _parceiro;
+
+  set parceiro(String value) {
+    _parceiro = value;
+  }
+
+  String get finalizacao => _finalizacao;
+
+  set finalizacao(String value) {
+    _finalizacao = value;
+  }
+
+  String get execucao => _execucao;
+
+  set execucao(String value) {
+    _execucao = value;
+  }
+
+  String get tempo_atend => _tempo_atend;
+
+  set tempo_atend(String value) {
+    _tempo_atend = value;
+  }
+
+  String get med_inst => _med_inst;
+
+  set med_inst(String value) {
+    _med_inst = value;
+  }
 
   String get inicio => _inicio;
 

@@ -56,6 +56,7 @@ flutter:
   assets:
     - images/logo_eletric.png
     - images/carro.png
+    - images/barcode2.png
 
   fonts:
     - family: EDP Preon

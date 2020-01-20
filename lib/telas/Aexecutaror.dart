@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:eletricapp/model/Ordem.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -181,7 +180,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                       //Recupara as ordens
                       List<DocumentSnapshot> ordens = querySnapshot.documents
                           .where((snapshot) =>
-                      snapshot.data['matricula'] == _equipeLogado)
+                      snapshot.data['matricula'] == _equipeLogado || snapshot.data['parceiro'] == _equipeLogado)
                           .toList();
 
                       print("ordens:" + ordens.length.toString());
@@ -192,10 +191,13 @@ class _AexecutarorState extends State<Aexecutaror> {
                         Ordem ordem = Ordem();
 
                         ordem.emissao = item['emissao'];
+                        ordem.inicio = item['inicio'];
+                        ordem.tempo_atend = item['tempo_atend'];
                         ordem.num_osr = item['num_osr'];
                         ordem.programacao = item['programacao'];
                         ordem.obra = item['obra'];
                         ordem.med_antigo = item['med_antigo'];
+                        ordem.med_inst = item['med_inst'];
                         ordem.modulo_cs = item['modulo_cs'];
                         ordem.display_retirado = item['display_retirado'];
                         ordem.display_instalado = item['display_instalado'];
@@ -212,6 +214,9 @@ class _AexecutarorState extends State<Aexecutaror> {
                         ordem.matricula = item['matricula'];
                         ordem.status = "Atribuída";
                         ordem.uidcriador = item['uidcriador'];
+                        ordem.execucao = item['execucao'];
+                        ordem.finalizacao = item['finalizacao'];
+                        ordem.parceiro = item['parceiro'];
 
 
                         return Card(

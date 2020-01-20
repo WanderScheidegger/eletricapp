@@ -76,7 +76,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                         style: TextStyle(
                           fontFamily: "EDP Preon",
                           fontSize: 12,
-                          color: Color(0xff311B92),
+                          color: Color(0xff000000),
                         ),
                       ),
                     ),
@@ -96,7 +96,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                       //Recupara as ordens
                       List<DocumentSnapshot> ordens = querySnapshot.documents
                           .where((snapshot) =>
-                      snapshot.data['matricula'] == _equipeLogado)
+                      snapshot.data['matricula'] == _equipeLogado || snapshot.data['parceiro'] == _equipeLogado)
                           .toList();
                       print("ordens:" + ordens.length.toString());
                       num++;
@@ -106,10 +106,13 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                         Ordem ordem = Ordem();
 
                         ordem.emissao = item['emissao'];
+                        ordem.inicio = item['inicio'];
+                        ordem.tempo_atend = item['tempo_atend'];
                         ordem.num_osr = item['num_osr'];
                         ordem.programacao = item['programacao'];
                         ordem.obra = item['obra'];
                         ordem.med_antigo = item['med_antigo'];
+                        ordem.med_inst = item['med_inst'];
                         ordem.modulo_cs = item['modulo_cs'];
                         ordem.display_retirado = item['display_retirado'];
                         ordem.display_instalado = item['display_instalado'];
@@ -126,6 +129,9 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                         ordem.matricula = item['matricula'];
                         ordem.status = "Atribuída";
                         ordem.uidcriador = item['uidcriador'];
+                        ordem.execucao = item['execucao'];
+                        ordem.finalizacao = item['finalizacao'];
+                        ordem.parceiro = item['parceiro'];
 
                         return Card(
                           elevation: 8,
@@ -187,7 +193,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                                         ),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
-                                              context, "/finalizanota",
+                                              context, "/finalizaor",
                                               arguments: ordem);
                                         }),
                                     RaisedButton(

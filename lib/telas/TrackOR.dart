@@ -14,23 +14,27 @@ class _TrackORState extends State<TrackOR> {
   Completer<GoogleMapController> _controller = Completer();
   Map<MarkerId, Marker> _marcadores = <MarkerId, Marker>{};
 
+
+
   CameraPosition _posicaoCamera = CameraPosition(
     target: LatLng(-20.210935, -40.253392),
-    zoom: 10.5,
+    zoom: 9.8,
   );
 
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
 
+
+
   _recuperarLocalizacoes() async {
 
     CollectionReference reference = Firestore.instance.collection('usuarios');
     reference.snapshots().listen((querySnapshot) {
       var listaLoc = querySnapshot.documents.toList();
-      //var somaLat = 0;
-      //var somaLong = 0;
-      //var n_users = listaLoc.length;
+      var somaLat = 0.0;
+      var somaLong = 0.0;
+      var n_users = listaLoc.length;
 
       //insere cada marca de usuário
       listaLoc.forEach((user) {
@@ -43,8 +47,8 @@ class _TrackORState extends State<TrackOR> {
         var lat = user.data['latitude'];
         var long = user.data['longitude'];
 
-        //somaLat += int.parse(lat);
-        //somaLong += int.parse(long);
+        somaLat += lat;
+        somaLong += long;
 
         BitmapDescriptor.fromAssetImage(
                 ImageConfiguration(devicePixelRatio: pixelRatio),
@@ -65,6 +69,17 @@ class _TrackORState extends State<TrackOR> {
         });
       });
 
+      var cameraLat = somaLat/n_users;
+      var cameraLong = somaLong/n_users;
+
+      if (this.mounted) {
+        setState(() {
+          _posicaoCamera = CameraPosition(target: LatLng(cameraLat, cameraLong), zoom: 9.8);
+
+          _movimentarCamera(_posicaoCamera);
+
+        });
+      }
 
     });
   }

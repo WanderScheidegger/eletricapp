@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eletricapp/model/Ordem.dart';
 import 'package:flutter/material.dart';
 
-class VerOrdemOr extends StatefulWidget {
+class VerOrdemOrFin extends StatefulWidget {
   Ordem ordem;
-  VerOrdemOr(this.ordem);
-
+  VerOrdemOrFin(this.ordem);
   @override
-  _VerOrdemOrState createState() => _VerOrdemOrState();
+  _VerOrdemOrFinState createState() => _VerOrdemOrFinState();
 }
 
-class _VerOrdemOrState extends State<VerOrdemOr> {
+class _VerOrdemOrFinState extends State<VerOrdemOrFin> {
   static Firestore db = Firestore.instance;
   static String numero;
   var dados;
@@ -183,6 +182,55 @@ class _VerOrdemOrState extends State<VerOrdemOr> {
                         textAlign: TextAlign.left,
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "DATA FINALIZAÇÃO: " + widget.ordem.finalizacao,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "DISPALY INSTALADO: " + widget.ordem.display_instalado,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "MEDIDOR INSTALADO: " + widget.ordem.med_inst,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "TEMPO DE ATENDIMENTO: " + widget.ordem.tempo_atend + " minutos",
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "STATUS DA ECEXUÇÃO: " + widget.ordem.execucao,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "OBSERVAÇÕES DE CAMPO: " + widget.ordem.observacoes,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
                   ],
                 ),
               ),
