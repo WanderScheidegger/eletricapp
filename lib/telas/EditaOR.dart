@@ -34,7 +34,7 @@ class _EditaORState extends State<EditaOR> {
       "Data da programação" : "programacao",
       "Medidor antigo" : "med_antigo",
       "Modulo cs" : "modulo_cs",
-      "Display" : "display_retirado",
+      "Display" : "display",
       "Cs" : "cs",
       "Trafo" : "trafo",
       "Anilha" : "anilha",

@@ -275,7 +275,7 @@ class _CadastroState extends State<Cadastro> {
                 ),
                 TextField(
                   controller: _controllerSenha,
-                  obscureText: true,
+                  obscureText: false,
                   keyboardType: TextInputType.text,
                   style: TextStyle(
                     fontFamily: "EDP Preon",

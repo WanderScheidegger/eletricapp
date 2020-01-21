@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Aexecutaror.dart';
 import 'EmExecucaoor.dart';
 import 'Executadasor.dart';
+import 'Rota.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -131,7 +132,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _verificarUsuarioLogado();
     _verificaEquipe();
     _adicionarListenerLocalizacao();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
     _dialogController.text = "";
 
     SystemChrome.setPreferredOrientations([
@@ -188,7 +189,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
               text: "Executadas",
             ),
-            /*
+
             Tab(
               icon: Icon(
                 Icons.map,
@@ -196,7 +197,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
               text: "Roteiro",
             ),
-            */
+
           ],
         ),
         actions: <Widget>[
@@ -219,7 +220,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Aexecutaror(),
           EmExecucaoor(),
           Executadasor(),
-          //Rota(),
+          Rota(),
         ],
       ),
     );

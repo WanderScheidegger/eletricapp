@@ -105,7 +105,7 @@ class _VerOrdemOrFinState extends State<VerOrdemOrFin> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: Text(
-                        "DISPLAY: " + widget.ordem.display_retirado,
+                        "DISPLAY: " + widget.ordem.display,
                         style: _textStyle(12.0),
                         textAlign: TextAlign.left,
                       ),
@@ -193,7 +193,15 @@ class _VerOrdemOrFinState extends State<VerOrdemOrFin> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: Text(
-                        "DISPALY INSTALADO: " + widget.ordem.display_instalado,
+                        "DISPLAY INSTALADO: " + widget.ordem.display_instalado,
+                        style: _textStyle(12.0),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "DISPLAY: " + widget.ordem.display_retirado,
                         style: _textStyle(12.0),
                         textAlign: TextAlign.left,
                       ),

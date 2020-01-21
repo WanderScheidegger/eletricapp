@@ -153,7 +153,8 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       ordem.med_antigo = _med_antigoController.text;
       ordem.med_inst = "";
       ordem.modulo_cs = _modulo_csController.text;
-      ordem.display_retirado = _display_retiradoController.text;
+      ordem.display_retirado = "";
+      ordem.display = _display_retiradoController.text;
       ordem.display_instalado = "";
       ordem.cs = _csController.text;
       ordem.trafo = _trafoController.text;
@@ -209,7 +210,8 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
       ordem.med_antigo = _med_antigoController.text;
       ordem.med_inst = "";
       ordem.modulo_cs = _modulo_csController.text;
-      ordem.display_retirado = _display_retiradoController.text;
+      ordem.display_retirado = "";
+      ordem.display = _display_retiradoController.text;
       ordem.display_instalado = "";
       ordem.cs = _csController.text;
       ordem.trafo = _trafoController.text;

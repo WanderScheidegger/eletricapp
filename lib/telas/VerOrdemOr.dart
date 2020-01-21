@@ -106,7 +106,7 @@ class _VerOrdemOrState extends State<VerOrdemOr> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 10),
                       child: Text(
-                        "DISPLAY: " + widget.ordem.display_retirado,
+                        "DISPLAY: " + widget.ordem.display,
                         style: _textStyle(12.0),
                         textAlign: TextAlign.left,
                       ),

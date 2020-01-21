@@ -12,6 +12,7 @@ class Ordem {
   String _med_antigo;
   String _med_inst;
   String _modulo_cs;
+  String _display;
   String _display_retirado;
   String _display_instalado;
   String _cs;
@@ -43,6 +44,7 @@ class Ordem {
       "med_antigo" : this._med_antigo,
       "med_inst" : this._med_inst,
       "modulo_cs" : this._modulo_cs,
+      "display" : this._display,
       "display_retirado" : this._display_retirado,
       "display_instalado" : this._display_instalado,
       "cs" : this._cs,
@@ -67,6 +69,12 @@ class Ordem {
 
   Ordem();
 
+
+  String get display => _display;
+
+  set display(String value) {
+    _display = value;
+  }
 
   String get parceiro => _parceiro;
 

@@ -107,6 +107,7 @@ class _ExecutadasorState extends State<Executadasor> {
                         ordem.med_antigo = item['med_antigo'];
                         ordem.med_inst = item['med_inst'];
                         ordem.modulo_cs = item['modulo_cs'];
+                        ordem.display = item['display'];
                         ordem.display_retirado = item['display_retirado'];
                         ordem.display_instalado = item['display_instalado'];
                         ordem.cs = item['cs'];

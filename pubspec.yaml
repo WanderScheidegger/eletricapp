@@ -57,6 +57,8 @@ flutter:
     - images/logo_eletric.png
     - images/carro.png
     - images/barcode2.png
+    - images/men_at_work.png
+    - images/el_services.png
 
   fonts:
     - family: EDP Preon
