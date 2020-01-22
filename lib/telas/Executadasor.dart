@@ -212,7 +212,7 @@ class _ExecutadasorState extends State<Executadasor> {
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff9E0616),
+                                    color: Color(0xff311B92),
                                   ),
                                 ),
                               ),

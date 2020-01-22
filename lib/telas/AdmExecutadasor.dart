@@ -65,7 +65,7 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                     ListTile(
                       title: Text(
                         "Você não tem ordens finalizadas ou houve um erro no carregamento. "
-                            "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
+                        "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "EDP Preon",
@@ -81,19 +81,18 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
               return Expanded(
                 child: ListView.separated(
                     separatorBuilder: (context, indice) => Divider(
-                      color: Color(0xff9E0616),
-                      thickness: 0.2,
-                    ),
+                          color: Color(0xff9E0616),
+                          thickness: 0.2,
+                        ),
                     itemCount: querySnapshot.documents.length,
                     itemBuilder: (context, indice) {
                       //Recupara as ordens
-                      List<DocumentSnapshot> ordens = querySnapshot.documents
-                          .where((snapshot) =>
-                      snapshot.data['matricula'] == _equipeLogado)
-                          .toList();
+                      List<DocumentSnapshot> ordens =
+                      querySnapshot.documents.toList();
+                      DocumentSnapshot item = ordens[indice];
 
                       num++;
-                      if (ordens.length != 0 && indice<ordens.length) {
+                      if (ordens.length != 0 && indice < ordens.length) {
                         DocumentSnapshot item = ordens[indice];
 
                         Ordem ordem = Ordem();
@@ -142,7 +141,8 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  "Obra: " + item['obra'] +
+                                  "Obra: " +
+                                      item['obra'] +
                                       " \n" +
                                       "Prog.: " +
                                       item['programacao'] +
@@ -183,12 +183,29 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                                         color: Colors.green,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(6),
+                                              BorderRadius.circular(6),
                                         ),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
                                               context, "/verordemor",
                                               arguments: ordem);
+                                        }),
+                                    RaisedButton(
+                                        child: Text(
+                                          "Deletar",
+                                          style: TextStyle(
+                                            fontFamily: "EDP Preon",
+                                            fontSize: 9,
+                                            color: Color(0xffffffff),
+                                          ),
+                                        ),
+                                        color: Color(0xffEE162D),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        onPressed: () {
+                                          _displayDialog_Ok(context, item);
                                         }),
                                   ],
                                 ),
@@ -196,7 +213,7 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                             ],
                           ),
                         );
-                      } else if(ordens.length==0 && num==1) {
+                      } else if (ordens.length == 0 && num == 1) {
                         return Card(
                           elevation: 8,
                           color: Color(0xffB5B6B3),
@@ -206,19 +223,19 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                               ListTile(
                                 title: Text(
                                   "Você não tem ordens finalizadas ou houve um erro no carregamento. "
-                                      "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
+                                  "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff9E0616),
+                                    color: Color(0xff311B92),
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         );
-                      } else{
+                      } else {
                         return null;
                       }
                     }),
@@ -242,11 +259,45 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
       setState(() {
         _isSemEquipe = false;
       });
-    }else {
+    } else {
       setState(() {
         _isSemEquipe = true;
       });
     }
+  }
+
+  //ALERT DIALOG
+  static _displayDialog_Ok(BuildContext context, item) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Tem certeza que deseja deletar a ordem? Todos os dados serão perdidos",
+              style: TextStyle(
+                fontFamily: "EDP Preon",
+                fontSize: 12,
+                color: Color(0xff311B92),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Deletar'),
+                onPressed: () async {
+                  await db.collection('OR').document(item.documentID).delete();
+
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override

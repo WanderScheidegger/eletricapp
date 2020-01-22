@@ -33,7 +33,6 @@ class _RotaState extends State<Rota> {
   }
 
 
-
   _recuperarLocalizacoes() async {
 
     CollectionReference reference = Firestore.instance.collection('OR');

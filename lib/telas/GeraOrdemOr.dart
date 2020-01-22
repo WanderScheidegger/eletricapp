@@ -287,7 +287,7 @@ class _GeraOrdemOrState extends State<GeraOrdemOr> {
                   padding: EdgeInsets.only(bottom: 10),
                   child: TextField(
                     controller: _programacaoController,
-                    keyboardType: TextInputType.datetime,
+                    keyboardType: TextInputType.text,
                     style: _textStyle(11.5),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(15),
