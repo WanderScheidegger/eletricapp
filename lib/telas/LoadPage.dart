@@ -23,13 +23,24 @@ class _LoadPageState extends State<LoadPage> {
           .get()
           .then((snapshot) {
 
+        var adm = snapshot.data['adm'];
 
         prefs.setString("uid", snapshot.data['matricula'].toString()
         + ":" + onValue.uid).then((onValue){
 
-          Future.delayed(const Duration(milliseconds: 2000), () {
+          Future.delayed(const Duration(milliseconds: 3000), () {
             setState(() {
+              /*
+              if (adm=='sim'){
+                Navigator.pushNamedAndRemoveUntil(context, "/menuadm", (_) => false);
+              }else{
+                Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+              }
+
+               */
+
               Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+
             });
           });
 
@@ -95,8 +106,8 @@ class _LoadPageState extends State<LoadPage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
-                child: Image.asset("images/logo_eletric.png",
-                    width: 128, height: 55),
+                child: Image.asset("images/anima.gif",
+                    width: 150, height: 185),
               ),
               CircularProgressIndicator(),
             ],

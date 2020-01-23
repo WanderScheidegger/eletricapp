@@ -6,6 +6,7 @@ import 'package:eletricapp/telas/GeraOrdemOr.dart';
 import 'package:eletricapp/telas/Home.dart';
 import 'package:eletricapp/telas/LoadPage.dart';
 import 'package:eletricapp/telas/Login.dart';
+import 'package:eletricapp/telas/MenuAdm.dart';
 import 'package:eletricapp/telas/ModificaUsuario.dart';
 import 'package:eletricapp/telas/TrackOR.dart';
 import 'package:eletricapp/telas/VerOrdemOr.dart';
@@ -34,6 +35,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => VerOrdemOrFin(args));
       case "/admor":
         return MaterialPageRoute(builder: (_) => AdmOR());
+      case "/menuadm":
+        return MaterialPageRoute(builder: (_) => MenuAdm());
       case "/editaor":
         return MaterialPageRoute(builder: (_) => EditaOR(args));
       case "/modificausuario":
