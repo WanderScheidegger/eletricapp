@@ -250,6 +250,7 @@ class _FinalizarORState extends State<FinalizarOR> {
       "tempo_atend": tempo_atend,
       "observacoes": observacoes,
       "execucao": execucao,
+      "med_inst": med_inst,
       "display_retirado": display_retirado,
       "display_instalado": display_instalado,
       "status" : "Finalizada",

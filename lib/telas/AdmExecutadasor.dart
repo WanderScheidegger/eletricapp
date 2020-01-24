@@ -187,7 +187,7 @@ class _AdmExecutadasorState extends State<AdmExecutadasor> {
                                         ),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
-                                              context, "/verordemor",
+                                              context, "/verordemorfim",
                                               arguments: ordem);
                                         }),
                                     RaisedButton(
