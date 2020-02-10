@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Aexecutaror.dart';
 import 'EmExecucaoor.dart';
 import 'Executadasor.dart';
-import 'Rota.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,26 +18,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController _tabController;
-  List<String> itensMenu = ["Logout", "ADM"];
   TextEditingController _dialogController = TextEditingController();
   String _textoAalerta = "Digite a senha de Administrador";
   String _equipeLogado = "";
   String _uid = "";
-
-
-  _escolhaMenuItem(String itemEscolhido) {
-    switch (itemEscolhido) {
-      case "ADM":
-        _displayDialog(context);
-        break;
-      case "Logout":
-        _deslogarUsuario();
-        break;
-    }
-  }
+  ProgressDialog pr;
 
   //ALERT DIALOG
-  _displayDialog(BuildContext context) async {
+  _displayDialog(BuildContext context, String local) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -52,7 +40,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               FlatButton(
                 child: Text('Entrar'),
                 onPressed: () {
-                  _admLogin();
+                  Navigator.of(context).pop();
+                  _admLogin(local);
                 },
               ),
               FlatButton(
@@ -66,14 +55,81 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         });
   }
 
-  _admLogin() {
+  //ALERT DIALOG
+  _displayDialog_NOk(BuildContext context, String msg) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            elevation: 10,
+            title: Text(
+              msg,
+              style: _textStyle(12.0),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+
+  //padrão de TextStyle
+  _textStyle(double size) {
+    return TextStyle(
+      fontFamily: "EDP Preon",
+      fontSize: size,
+      color: Color(0xff311B92),
+    );
+  }
+
+  _admLogin(String local) {
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+      message: 'Efetuando o login...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: _textStyle(12.0),
+    );
+
+    pr.show();
     String senhaADM = _dialogController.text;
-    if (senhaADM == "aneel") {
-      setState(() {
-        _dialogController.text = "";
-      });
-      Navigator.pushReplacementNamed(context, "/admor");
-    }
+
+    Firestore db = Firestore.instance;
+    db.collection('passwords')
+        .document('master')
+        .get()
+        .then((onValue){
+
+          pr.hide();
+          print(onValue.data['senha'].toString());
+
+
+        if (senhaADM == onValue.data['senha'].toString()) {
+          setState(() {
+            _dialogController.text = "";
+          });
+          Navigator.pushReplacementNamed(context, local);
+        }else{
+          _displayDialog_NOk(context, "Senha incorreta, tente novamente.");
+
+        }
+
+    }).timeout(Duration(seconds: 15), onTimeout: () {
+      pr.hide();
+      _displayDialog_NOk(context, "Tempo excedido!, check sua conexão com a internet e tente novamente");
+
+    });
+
+
   }
 
   _deslogarUsuario() async {
@@ -132,7 +188,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _verificarUsuarioLogado();
     _verificaEquipe();
     _adicionarListenerLocalizacao();
-    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     _dialogController.text = "";
 
     SystemChrome.setPreferredOrientations([
@@ -190,29 +246,88 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               text: "Executadas",
             ),
 
-            Tab(
-              icon: Icon(
-                Icons.map,
-                size: 30,
-              ),
-              text: "Roteiro",
-            ),
-
           ],
         ),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: _escolhaMenuItem,
-            itemBuilder: (context) {
-              return itensMenu.map((String item) {
-                return PopupMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                );
-              }).toList();
-            },
-          ),
-        ],
+
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/pendencia.png"),
+                  fit: BoxFit.none,
+                ),
+                color: Color(0xff9FA8DA),
+              ),
+              child: Text(
+                '\n\nELETRIC',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage("images/almoxarifado.png"),
+              ),
+              title: Text('Almoxarifado'),
+              onTap: (){
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage("images/ccm.png"),
+              ),
+              title: Text('CCM'),
+              onTap: (){
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage("images/pendencia.png"),
+              ),
+              title: Text('Pendências (ADM)'),
+              onTap: (){
+                Navigator.pop(context);
+                _displayDialog(context, "/admor");
+              },
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage("images/seguranca.png"),
+              ),
+              title: Text('Segurança'),
+              onTap: (){
+                Navigator.pop(context);
+                _displayDialog(context, "/homesafework");
+              },
+            ),
+            ListTile(
+              leading:Icon(Icons.map),
+              title: Text('Mapa'),
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, "/rota", (_) => false);
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: (){
+                Navigator.pop(context);
+                _deslogarUsuario();
+
+              },
+            ),
+          ],
+        ),
       ),
       body: TabBarView(
         controller: _tabController,
@@ -220,7 +335,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Aexecutaror(),
           EmExecucaoor(),
           Executadasor(),
-          Rota(),
         ],
       ),
     );

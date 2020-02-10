@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
     FirebaseUser usuarioLogado = await auth.currentUser();
     if (usuarioLogado != null) {
 
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+      Navigator.pushNamedAndRemoveUntil(context, "/menuadm", (_) => false);
     }
   }
 

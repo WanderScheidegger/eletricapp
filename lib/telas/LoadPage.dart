@@ -39,7 +39,7 @@ class _LoadPageState extends State<LoadPage> {
 
                */
 
-              Navigator.pushNamedAndRemoveUntil(context, "/home", (_) => false);
+              Navigator.pushNamedAndRemoveUntil(context, "/menuadm", (_) => false);
 
             });
           });

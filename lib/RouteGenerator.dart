@@ -1,3 +1,5 @@
+import 'package:eletricapp/Almoxarifado/Diagrama.dart';
+import 'package:eletricapp/SafeWork/HomeSafeWork.dart';
 import 'package:eletricapp/telas/AdmOR.dart';
 import 'package:eletricapp/telas/Cadastro.dart';
 import 'package:eletricapp/telas/EditaOR.dart';
@@ -8,6 +10,7 @@ import 'package:eletricapp/telas/LoadPage.dart';
 import 'package:eletricapp/telas/Login.dart';
 import 'package:eletricapp/telas/MenuAdm.dart';
 import 'package:eletricapp/telas/ModificaUsuario.dart';
+import 'package:eletricapp/telas/Rota.dart';
 import 'package:eletricapp/telas/TrackOR.dart';
 import 'package:eletricapp/telas/VerOrdemOr.dart';
 import 'package:eletricapp/telas/VerOrdemOrFin.dart';
@@ -45,6 +48,18 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => TrackOR());
       case "/finalizaor":
         return MaterialPageRoute(builder: (_) => FinalizarOR(args));
+      case "/rota":
+        return MaterialPageRoute(builder: (_) => Rota());
+        //----------------------------------------------------------------------
+      case "/diagrama":
+        return MaterialPageRoute(builder: (_) => Diagrama());
+
+        //------------------ Segurança do trabalho -----------------------------
+      case "/homesafework":
+        return MaterialPageRoute(builder: (_) => HomeSafeWork());
+
+        //----------------------------------------------------------------------
+
 
     }
 

@@ -59,6 +59,10 @@ flutter:
     - images/barcode2.png
     - images/el_services.png
     - images/anima.gif
+    - images/almoxarifado.png
+    - images/ccm.png
+    - images/pendencia.png
+    - images/seguranca.png
 
   fonts:
     - family: EDP Preon
