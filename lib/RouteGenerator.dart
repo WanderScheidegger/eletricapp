@@ -1,5 +1,8 @@
 import 'package:eletricapp/Almoxarifado/Diagrama.dart';
 import 'package:eletricapp/SafeWork/HomeSafeWork.dart';
+import 'package:eletricapp/SafeWork/NotificaPess.dart';
+import 'package:eletricapp/SafeWork/NotificaVeic.dart';
+import 'package:eletricapp/SafeWork/SeeNot.dart';
 import 'package:eletricapp/telas/AdmOR.dart';
 import 'package:eletricapp/telas/Cadastro.dart';
 import 'package:eletricapp/telas/EditaOR.dart';
@@ -57,6 +60,13 @@ class RouteGenerator{
         //------------------ Segurança do trabalho -----------------------------
       case "/homesafework":
         return MaterialPageRoute(builder: (_) => HomeSafeWork());
+
+      case "/notificaveic":
+        return MaterialPageRoute(builder: (_) => NotificaVeic());
+      case "/notificapess":
+        return MaterialPageRoute(builder: (_) => NotificaPess());
+      case "/seenot":
+        return MaterialPageRoute(builder: (_) => SeeNot(args));
 
         //----------------------------------------------------------------------
 

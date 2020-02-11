@@ -6,15 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 class HomeSafeWork extends StatefulWidget {
   @override
   _HomeSafeWorkState createState() => _HomeSafeWorkState();
 }
 
-class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderStateMixin{
+class _HomeSafeWorkState extends State<HomeSafeWork>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
-
 
   _deslogarUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -22,6 +21,66 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
     Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
   }
 
+  //CHOICE DIALOG
+  _displayDialogChoice(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+                "Escolha o alvo da notificação.",
+                style: _textStyle(14.0),
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                  child: Text(
+                    "Pessoas",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 12,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Color(0xffEE162D),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushNamedAndRemoveUntil(context, "/notificapess", (_) => false);
+                  }),
+              RaisedButton(
+                  child: Text(
+                    "Veículos",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 12,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Color(0xffEE162D),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pushNamedAndRemoveUntil(context, "/notificaveic", (_) => false);
+                  }),
+            ],
+          );
+        });
+  }
+
+  //padrão de TextStyle
+  _textStyle(double size) {
+    return TextStyle(
+      fontFamily: "EDP Preon",
+      fontSize: size,
+      color: Color(0xff9E0616),
+    );
+  }
 
   @override
   void initState() {
@@ -91,7 +150,6 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
             ),
           ],
         ),
-
       ),
       drawer: Drawer(
         child: ListView(
@@ -118,7 +176,7 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
                 backgroundImage: AssetImage("images/almoxarifado.png"),
               ),
               title: Text('Almoxarifado'),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
@@ -127,7 +185,7 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
                 backgroundImage: AssetImage("images/ccm.png"),
               ),
               title: Text('CCM'),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
@@ -136,7 +194,7 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
                 backgroundImage: AssetImage("images/pendencia.png"),
               ),
               title: Text('Pendências'),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, "/home");
               },
@@ -144,7 +202,7 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Logout'),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
                 _deslogarUsuario();
               },
@@ -160,6 +218,17 @@ class _HomeSafeWorkState extends State<HomeSafeWork> with SingleTickerProviderSt
           EmAbertoHsw(),
           FinalizadasHsw(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(context, "/notificapess", (_) => false);
+        },
+        child: Icon(
+            Icons.add,
+            color: Colors.white,
+          size: 35,
+        ),
+        backgroundColor: Color(0xffEE162D),
       ),
     );
   }
