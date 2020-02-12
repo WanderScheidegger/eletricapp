@@ -219,16 +219,23 @@ class _HomeSafeWorkState extends State<HomeSafeWork>
           FinalizadasHsw(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamedAndRemoveUntil(context, "/notificapess", (_) => false);
-        },
-        child: Icon(
-            Icons.add,
-            color: Colors.white,
-          size: 35,
+
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xffEE162D),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              iconSize: 38,
+              color: Colors.white,
+              icon: Icon(Icons.add_circle_outline),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(context, "/notificapess", (_) => false);
+              },
+            ),
+          ],
         ),
-        backgroundColor: Color(0xffEE162D),
       ),
     );
   }

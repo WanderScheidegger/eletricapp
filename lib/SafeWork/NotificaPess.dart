@@ -165,7 +165,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes2 = _acoes2Controller.text;
       }else{
         ordem.risco2 = "";
-        ordem.retorno2 = "";
+        ordem.retorno2 = _dataShow1;
         ordem.irregularidade2 = "";
         ordem.acoes2 = "";
       }
@@ -177,7 +177,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes3 = _acoes3Controller.text;
       }else{
         ordem.risco3 = "";
-        ordem.retorno3 = "";
+        ordem.retorno3 = _dataShow1;
         ordem.irregularidade3 = "";
         ordem.acoes3 = "";
       }
@@ -189,7 +189,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes4 = _acoes4Controller.text;
       }else{
         ordem.risco4 = "";
-        ordem.retorno4 = "";
+        ordem.retorno4 = _dataShow1;
         ordem.irregularidade4 = "";
         ordem.acoes4 = "";
       }
@@ -201,7 +201,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes5 = _acoes5Controller.text;
       }else{
         ordem.risco5 = "";
-        ordem.retorno5 = "";
+        ordem.retorno5 = _dataShow1;
         ordem.irregularidade5 = "";
         ordem.acoes5 = "";
       }
@@ -259,7 +259,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes2 = _acoes2Controller.text;
       }else{
         ordem.risco2 = "";
-        ordem.retorno2 = "";
+        ordem.retorno2 = _dataShow1;
         ordem.irregularidade2 = "";
         ordem.acoes2 = "";
       }
@@ -271,7 +271,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes3 = _acoes3Controller.text;
       }else{
         ordem.risco3 = "";
-        ordem.retorno3 = "";
+        ordem.retorno3 = _dataShow1;
         ordem.irregularidade3 = "";
         ordem.acoes3 = "";
       }
@@ -283,7 +283,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes4 = _acoes4Controller.text;
       }else{
         ordem.risco4 = "";
-        ordem.retorno4 = "";
+        ordem.retorno4 = _dataShow1;
         ordem.irregularidade4 = "";
         ordem.acoes4 = "";
       }
@@ -295,7 +295,7 @@ class _NotificaPessState extends State<NotificaPess> {
         ordem.acoes5 = _acoes5Controller.text;
       }else{
         ordem.risco5 = "";
-        ordem.retorno5 = "";
+        ordem.retorno5 = _dataShow1;
         ordem.irregularidade5 = "";
         ordem.acoes5 = "";
       }
@@ -333,6 +333,28 @@ class _NotificaPessState extends State<NotificaPess> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.pushReplacementNamed(context, "/homesafework");
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  //ALERT DIALOG
+  _displayDialog_NOk(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Tipo, setor e data de retorno são obrigatórios",
+              style: _textStyle(13.0),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
                 },
               )
             ],
@@ -530,7 +552,19 @@ class _NotificaPessState extends State<NotificaPess> {
                       _setor,
                       style: _textStyle(14),
                     ),
-                    items: <String>['CCM', 'btzero', 'Almoxarifado']
+                    items: <String>[
+                      '1-Boa Energia',
+                      '2-Pendências',
+                      '3-Cadastro',
+                      '4-Plantão',
+                      '5-Linha Morta CCM',
+                      '6-Linha Morta CCM',
+                      '7-Linha Viva CCM',
+                      '8-Linha Viva BTZero',
+                      '9-Linha Morta BTZero',
+                      '10-BTZero Ramal',
+                      '11-Almoxarifado'
+                    ]
                         .map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
@@ -592,10 +626,13 @@ class _NotificaPessState extends State<NotificaPess> {
                                   style: _textStyle(14),
                                 ),
                                 items: <String>[
-                                  'Risco 1',
-                                  'Risco 2',
-                                  'Risco 3',
-                                  'Risco 4'
+                                  '1-Acidente',
+                                  '2-Multa',
+                                  '3-Paralização',
+                                  '4-Acidente + Multa',
+                                  '5-Acidente + Paralização',
+                                  '6-Acidente + Multa + Paralização',
+                                  '7-Multa + Paralização'
                                 ].map((String value) {
                                   return new DropdownMenuItem<String>(
                                     value: value,
@@ -737,10 +774,13 @@ class _NotificaPessState extends State<NotificaPess> {
                                   style: _textStyle(14),
                                 ),
                                 items: <String>[
-                                  'Risco 1',
-                                  'Risco 2',
-                                  'Risco 3',
-                                  'Risco 4'
+                                  '1-Acidente',
+                                  '2-Multa',
+                                  '3-Paralização',
+                                  '4-Acidente + Multa',
+                                  '5-Acidente + Paralização',
+                                  '6-Acidente + Multa + Paralização',
+                                  '7-Multa + Paralização'
                                 ].map((String value) {
                                   return new DropdownMenuItem<String>(
                                     value: value,
@@ -882,10 +922,13 @@ class _NotificaPessState extends State<NotificaPess> {
                                   style: _textStyle(14),
                                 ),
                                 items: <String>[
-                                  'Risco 1',
-                                  'Risco 2',
-                                  'Risco 3',
-                                  'Risco 4'
+                                  '1-Acidente',
+                                  '2-Multa',
+                                  '3-Paralização',
+                                  '4-Acidente + Multa',
+                                  '5-Acidente + Paralização',
+                                  '6-Acidente + Multa + Paralização',
+                                  '7-Multa + Paralização'
                                 ].map((String value) {
                                   return new DropdownMenuItem<String>(
                                     value: value,
@@ -1027,10 +1070,13 @@ class _NotificaPessState extends State<NotificaPess> {
                                   style: _textStyle(14),
                                 ),
                                 items: <String>[
-                                  'Risco 1',
-                                  'Risco 2',
-                                  'Risco 3',
-                                  'Risco 4'
+                                  '1-Acidente',
+                                  '2-Multa',
+                                  '3-Paralização',
+                                  '4-Acidente + Multa',
+                                  '5-Acidente + Paralização',
+                                  '6-Acidente + Multa + Paralização',
+                                  '7-Multa + Paralização'
                                 ].map((String value) {
                                   return new DropdownMenuItem<String>(
                                     value: value,
@@ -1172,10 +1218,13 @@ class _NotificaPessState extends State<NotificaPess> {
                                   style: _textStyle(14),
                                 ),
                                 items: <String>[
-                                  'Risco 1',
-                                  'Risco 2',
-                                  'Risco 3',
-                                  'Risco 4'
+                                  '1-Acidente',
+                                  '2-Multa',
+                                  '3-Paralização',
+                                  '4-Acidente + Multa',
+                                  '5-Acidente + Paralização',
+                                  '6-Acidente + Multa + Paralização',
+                                  '7-Multa + Paralização'
                                 ].map((String value) {
                                   return new DropdownMenuItem<String>(
                                     value: value,
@@ -1290,7 +1339,16 @@ class _NotificaPessState extends State<NotificaPess> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       onPressed: () {
-                        _checaSuper();
+                        //_checaSuper();
+                        if (_dataShow1 != 'Data de retorno' &&
+                            _setor != 'Escolha o setor' &&
+                            _opcao != "Escolha o tipo de notificação"
+                        ){
+                          _geraNotificacao();
+                        }else{
+                          _displayDialog_NOk(context);
+                        }
+
                       }),
                 ),
               ],

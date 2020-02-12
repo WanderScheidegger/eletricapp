@@ -159,7 +159,7 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        "Você não tem notificações para dar ciência ou houve um erro no carregamento. "
+                        "Não há notificações para dar ciência ou houve um erro no carregamento. "
                             "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -185,7 +185,7 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
                       //Recupara as ordens
                       List<DocumentSnapshot> ordens = querySnapshot.documents
                           .where((snapshot) =>
-                      snapshot.data['matSupervisor'] == _equipeLogado)
+                      snapshot.data['ciencia'] == 'Não')
                           .toList();
 
                       num++;
@@ -323,7 +323,7 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
                             children: <Widget>[
                               ListTile(
                                 title: Text(
-                                  "Você não tem notificações para dar ciência ou houve um erro no carregamento. "
+                                  "Não há notificações para dar ciência ou houve um erro no carregamento. "
                                       "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
