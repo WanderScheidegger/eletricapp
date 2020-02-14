@@ -121,12 +121,6 @@ class _MenuAdmState extends State<MenuAdm> {
 
   }
 
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,13 +143,11 @@ class _MenuAdmState extends State<MenuAdm> {
                              GestureDetector(
                                child: Padding(
                                  padding: EdgeInsets.only(top: 10, right: 10),
-                                 child: Image.asset("images/almoxarifado.png",
+                                 child: Image.asset("images/roteirizador.png",
                                      width: 90, height: 90),
                                ),
                                onTap: (){
-
-
-
+                                 Navigator.pushNamedAndRemoveUntil(context, "/homeroteiriza", (_) => false);
                                },
                              ),
 
@@ -166,7 +158,7 @@ class _MenuAdmState extends State<MenuAdm> {
                              Padding(
                                padding: EdgeInsets.all(5),
                                child: Text(
-                                 "Almoxarifado",
+                                 "Roteiro",
                                  textAlign: TextAlign.center,
                                  style: TextStyle(
                                    fontFamily: "EDP Preon",

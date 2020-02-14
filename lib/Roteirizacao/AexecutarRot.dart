@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
-import 'package:eletricapp/model/Ordem.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Aexecutaror extends StatefulWidget {
+import 'model/OrdemRot.dart';
+
+class AexecutarRot extends StatefulWidget {
   @override
-  _AexecutarorState createState() => _AexecutarorState();
+  _AexecutarRotState createState() => _AexecutarRotState();
 }
 
-class _AexecutarorState extends State<Aexecutaror> {
+class _AexecutarRotState extends State<AexecutarRot> {
   static Firestore db = Firestore.instance;
   static String _equipeLogado = "sem equipe";
   bool _isSemEquipe = true;
@@ -27,7 +28,7 @@ class _AexecutarorState extends State<Aexecutaror> {
               style: TextStyle(
                 fontFamily: "EDP Preon",
                 fontSize: 12,
-                color: Color(0xff311B92),
+                color: Color(0xff008B00),
               ),
             ),
             actions: <Widget>[
@@ -38,8 +39,8 @@ class _AexecutarorState extends State<Aexecutaror> {
                   String _timeInicio = formatDate(
                       time, [dd, '/', mm, '/', yyyy, ' - ', H, ':', nn]);
                   db
-                      .collection("OR")
-                      .document(item['num_osr'])
+                      .collection("roteirizacao")
+                      .document(item['num_rot'])
                       .updateData(
                       {'status': 'Em execução', 'inicio': _timeInicio});
 
@@ -109,7 +110,7 @@ class _AexecutarorState extends State<Aexecutaror> {
 
   StreamBuilder stream = StreamBuilder(
       stream: db
-          .collection("OR")
+          .collection("roteirizacao")
           .where('status', isEqualTo: "Atribuída")
           .snapshots(),
       // ignore: missing_return
@@ -123,7 +124,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                 style: TextStyle(
                   fontFamily: "EDP Preon",
                   fontSize: 12,
-                  color: Color(0xff311B92),
+                  color: Color(0xff008B00),
                 ),
               ),
             );
@@ -133,11 +134,11 @@ class _AexecutarorState extends State<Aexecutaror> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Carregando as ordens...",
+                    "Carregando as tarefas...",
                     style: TextStyle(
                       fontFamily: "EDP Preon",
                       fontSize: 12,
-                      color: Color(0xff311B92),
+                      color: Color(0xff008B00),
                     ),
                   ),
                   CircularProgressIndicator(),
@@ -159,13 +160,13 @@ class _AexecutarorState extends State<Aexecutaror> {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        "Você não tem ordens a executar ou houve um erro no carregamento. "
+                        "Você não tem tarefas a executar ou houve um erro no carregamento. "
                             "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "EDP Preon",
                           fontSize: 12,
-                          color: Color(0xff311B92),
+                          color: Color(0xff008B00),
                         ),
                       ),
                     ),
@@ -193,35 +194,22 @@ class _AexecutarorState extends State<Aexecutaror> {
                       if (ordens.length != 0 && indice<ordens.length){
                         DocumentSnapshot item = ordens[indice];
 
-                        Ordem ordem = Ordem();
+                        OrdemRot ordem = OrdemRot();
 
                         ordem.emissao = item['emissao'];
                         ordem.inicio = item['inicio'];
                         ordem.tempo_atend = item['tempo_atend'];
-                        ordem.num_osr = item['num_osr'];
+                        ordem.num_rot = item['num_rot'];
                         ordem.programacao = item['programacao'];
-                        ordem.obra = item['obra'];
-                        ordem.med_antigo = item['med_antigo'];
-                        ordem.med_inst = item['med_inst'];
-                        ordem.modulo_cs = item['modulo_cs'];
-                        ordem.display = item['display'];
-                        ordem.display_retirado = item['display_retirado'];
-                        ordem.display_instalado = item['display_instalado'];
-                        ordem.cs = item['cs'];
-                        ordem.trafo = item['trafo'];
-                        ordem.anilha = item['anilha'];
-                        ordem.tipo_de_fase = item['tipo_de_fase'];
+                        ordem.diagrama = item['diagrama'];
                         ordem.endereco = item['endereco'];
                         ordem.coord_x = item['coord_x'];
                         ordem.coord_y = item['coord_y'];
-                        ordem.tipo_ordem = item['tipo_ordem'];
                         ordem.observacoes = item['observacoes'];
                         ordem.obs_adm = item['obs_adm'];
                         ordem.matricula = item['matricula'];
                         ordem.status = "Atribuída";
                         ordem.uidcriador = item['uidcriador'];
-                        ordem.execucao = item['execucao'];
-                        ordem.finalizacao = item['finalizacao'];
                         ordem.parceiro = item['parceiro'];
 
 
@@ -233,29 +221,29 @@ class _AexecutarorState extends State<Aexecutaror> {
                             children: <Widget>[
                               ListTile(
                                 title: Text(
-                                  "OSR: " + item['num_osr'],
+                                  "Número: " + item['num_rot'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                                 subtitle: Text(
-                                  "Obra: " + item['obra'] +
+                                  "Diagrama: " + item['diagrama'] +
                                       " \n" +
                                       "Prog.: " +
                                       item['programacao'] +
                                       "\n" +
-                                      "Tipo: " +
-                                      item['tipo_ordem'],
+                                      "Endereço: " +
+                                      item['endereco'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                                 trailing: Text(
-                                      "Sit: " +
+                                  "Sit: " +
                                       item['status'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
@@ -269,24 +257,6 @@ class _AexecutarorState extends State<Aexecutaror> {
                                   children: <Widget>[
                                     RaisedButton(
                                         child: Text(
-                                          "Visualizar",
-                                          style: TextStyle(
-                                            fontFamily: "EDP Preon",
-                                            fontSize: 9,
-                                            color: Color(0xffffffff),
-                                          ),
-                                        ),
-                                        color: Color(0xff9FA8DA),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pushReplacementNamed(
-                                              context, "/verordemor",
-                                              arguments: ordem);
-                                        }),
-                                    RaisedButton(
-                                        child: Text(
                                           "Iniciar deslocamento",
                                           style: TextStyle(
                                             fontFamily: "EDP Preon",
@@ -294,7 +264,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                                             color: Color(0xffffffff),
                                           ),
                                         ),
-                                        color: Colors.green,
+                                        color: Colors.yellow,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(6),
                                         ),
@@ -317,13 +287,13 @@ class _AexecutarorState extends State<Aexecutaror> {
                             children: <Widget>[
                               ListTile(
                                 title: Text(
-                                  "Você não tem ordens a executar ou houve um erro no carregamento. "
+                                  "Você não tem tarefas a executar ou houve um erro no carregamento. "
                                       "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                               ),
@@ -391,7 +361,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                       style: TextStyle(
                         fontFamily: "EDP Preon",
                         fontSize: 12,
-                        color: Color(0xff311B92),
+                        color: Color(0xff008B00),
                       ),
                     ),
                   ),
@@ -404,3 +374,4 @@ class _AexecutarorState extends State<Aexecutaror> {
     );
   }
 }
+

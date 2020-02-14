@@ -76,7 +76,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                         style: TextStyle(
                           fontFamily: "EDP Preon",
                           fontSize: 12,
-                          color: Color(0xff000000),
+                          color: Color(0xff311B92),
                         ),
                       ),
                     ),
@@ -212,7 +212,7 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
                                         ),
                                         onPressed: () {
                                           //_displayDialog_Ok(context, item);
-                                          _openMaps(item);
+                                          _displayMapsOption(context, item);
                                         }),
                                   ],
                                 ),
@@ -274,6 +274,40 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
     }
   }
 
+  //ALERT DIALOG
+  static _displayMapsOption(BuildContext context, item) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Qual App deseja iniciar a rota?",
+              style: TextStyle(
+                fontFamily: "EDP Preon",
+                fontSize: 12,
+                color: Color(0xff008B00),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Google Maps'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _openMaps(item);
+                },
+              ),
+              FlatButton(
+                child: Text('Waze'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _openWaze(item);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   static _openMaps(item){
 
     Geolocator().getCurrentPosition(
@@ -289,7 +323,26 @@ class _EmExecucaoorState extends State<EmExecucaoor> {
               "," +
               item['coord_y']);
 
-    }).timeout(Duration(seconds: 5), onTimeout: () {
+    }).timeout(Duration(seconds: 10), onTimeout: () {
+
+    });
+
+  }
+
+  static _openWaze(item){
+
+    Geolocator().getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+    ).then((Position position){
+
+      var latIr = item['coord_x'];
+      var longIr = item['coord_y'];
+
+      launch(
+          "waze://?ll=$latIr%2C$longIr&navigate=yes&zoom=17"
+      );
+
+    }).timeout(Duration(seconds: 10), onTimeout: () {
 
     });
 

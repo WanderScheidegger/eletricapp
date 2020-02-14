@@ -59,15 +59,15 @@ flutter:
     - images/barcode2.png
     - images/el_services.png
     - images/anima.gif
-    - images/almoxarifado.png
     - images/ccm.png
     - images/pendencia.png
     - images/seguranca.png
+    - images/roteirizador.png
 
   fonts:
     - family: EDP Preon
       fonts:
-        - asset: fonts/EDP Preon Regular.otf
+        - asset: fonts/EDPPreonRegular.otf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

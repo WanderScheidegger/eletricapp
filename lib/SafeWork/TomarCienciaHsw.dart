@@ -19,6 +19,7 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
   static ProgressDialog pr;
   static String _dataCiencia = formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy]);
 
+
   //padrão de TextStyle
   static _textStyle(double size) {
     return TextStyle(
@@ -83,7 +84,6 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
       _displayDialog_NOk(context);
 
     });
-
   }
 
   //ALERT DIALOG
@@ -227,6 +227,8 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
                         ordem.supervisor = item["supervisor"];
                         ordem.matSupervisor = item["matSupervisor"];
                         ordem.ciencia = item["ciencia"];
+                        ordem.zdata_finaliza = item["zdata_finaliza"];
+                        ordem.observacoes = item["observacoes"];
 
                         return Card(
                           elevation: 8,
@@ -287,6 +289,7 @@ class _TomarCienciaHswState extends State<TomarCienciaHsw> {
                                           _displayDialog_Ciencia(context, item['num_ost']);
 
                                         }),
+
                                     RaisedButton(
                                         child: Text(
                                           "Visualizar",

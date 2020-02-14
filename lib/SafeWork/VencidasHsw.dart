@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/OrdemSt.dart';
@@ -14,6 +16,9 @@ class _VencidasHswState extends State<VencidasHsw> {
   static String _equipeLogado = "sem equipe";
   bool _isSemEquipe = true;
   static var _hoje = DateTime.now();
+  static TextEditingController _controllerObservacoes = TextEditingController();
+  static ProgressDialog pr;
+  static String _dataFinaliza = formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy]);
 
 
   //padrão de TextStyle
@@ -28,6 +33,150 @@ class _VencidasHswState extends State<VencidasHsw> {
   static _stringToDate(string){
     var lista = string.split("/");
     return DateTime( int.parse(lista[2]), int.parse(lista[1]), int.parse(lista[0]));
+  }
+
+
+  //ALERT DIALOG
+  static _showDisplayDialog(BuildContext context, item) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(15),
+            elevation: 15.0,
+            title: Text(
+              "Finalizar a notificação",
+              style: _textStyle(14.0),
+              textAlign: TextAlign.center,
+            ),
+            content: TextField(
+              controller: _controllerObservacoes,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: _textStyle(13.0),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(15),
+                hintText: "Preencha as \n "
+                    "observações para \n "
+                    "finalizar a \n "
+                    "notificação.",
+                filled: true,
+                fillColor: Color(0xffB5B6B3),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                  child: Text(
+                    "Finalizar",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 9,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Color(0xffEE162D),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _tomarCiencia(context, item);
+                  }),
+              RaisedButton(
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 9,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          );
+        });
+  }
+
+  //ALERT DIALOG
+  static _displayDialogCiencia(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "O notificado ainda não tomou ciência desta notificação. Providencie a cência dos envolvidos",
+              style: _textStyle(13.0),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+
+  static _tomarCiencia(context, item){
+
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+      message: 'Gravando...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: _textStyle(12.0),
+    );
+
+    pr.show();
+
+    db.collection("OST")
+        .document(item)
+        .updateData({"em_aberto" : "Não", "zdata_finaliza" : _dataFinaliza, "observacoes" : _controllerObservacoes.text })
+        .then((onValue){
+      pr.hide();
+
+    }).timeout(Duration(seconds: 15), onTimeout: () {
+      pr.hide();
+      _displayDialog_NOk(context);
+
+    });
+
+  }
+
+  //ALERT DIALOG
+  static _displayDialog_NOk(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Erro ao salvar os dados",
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 
   _verificaEquipe() async {
@@ -176,6 +325,8 @@ class _VencidasHswState extends State<VencidasHsw> {
                         ordem.supervisor = item["supervisor"];
                         ordem.matSupervisor = item["matSupervisor"];
                         ordem.ciencia = item["ciencia"];
+                        ordem.zdata_finaliza = item["zdata_finaliza"];
+                        ordem.observacoes = item["observacoes"];
 
                         return Card(
                           elevation: 8,
@@ -237,6 +388,27 @@ class _VencidasHswState extends State<VencidasHsw> {
                                               context, "/seenot",
                                               arguments: ordem);
 
+                                        }),
+                                    RaisedButton(
+                                        child: Text(
+                                          "Finalizar",
+                                          style: TextStyle(
+                                            fontFamily: "EDP Preon",
+                                            fontSize: 9,
+                                            color: Color(0xffffffff),
+                                          ),
+                                        ),
+                                        color: Color(0xffEE162D),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        onPressed: () {
+                                          if (item['ciencia'] == "Sim") {
+                                            _showDisplayDialog(
+                                                context, item['num_ost']);
+                                          }else{
+                                            _displayDialogCiencia(context);
+                                          }
                                         }),
 
                                   ],

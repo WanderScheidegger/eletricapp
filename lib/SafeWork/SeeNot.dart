@@ -11,12 +11,13 @@ class SeeNot extends StatefulWidget {
 
 class _SeeNotState extends State<SeeNot> {
   bool _isVisPlaca = false;
+  bool _isVisFinaliza = false;
+
   bool _isVisirreg1 = false;
   bool _isVisirreg2 = false;
   bool _isVisirreg3 = false;
   bool _isVisirreg4 = false;
   bool _isVisirreg5 = false;
-
 
   //padrão de TextStyle
   static _textStyle(double size) {
@@ -56,6 +57,12 @@ class _SeeNotState extends State<SeeNot> {
     if (widget.ordem.irregularidade5 != ""){
       setState(() {
         _isVisirreg5 = true;
+      });
+    }
+
+    if (widget.ordem.observacoes != ""){
+      setState(() {
+        _isVisFinaliza = true;
       });
     }
 
@@ -143,7 +150,10 @@ class _SeeNotState extends State<SeeNot> {
                         "SETOR: " + widget.ordem.setor + "\n" +
                             "TIPO: " + widget.ordem.opcao + "\n" +
                             "DATA: " + widget.ordem.data + "\n" +
-                            "RESPONSÁVEL: " + widget.ordem.responsavel,
+                            "RESPONSÁVEL: " + widget.ordem.responsavel + "\n" +
+                            "Ciente: " + widget.ordem.ciencia + "\n" +
+                            "Em aberto: " + widget.ordem.em_aberto
+                        ,
                         style: _textStyle(13.0),
                       ),
                     ),
@@ -276,6 +286,27 @@ class _SeeNotState extends State<SeeNot> {
                         ],
                       ),
                     ),
+                    //------------------------obs-------------------------------
+                    Visibility(
+                      visible: _isVisFinaliza,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              "FINALIZADA EM: " + widget.ordem.zdata_finaliza + "\n" +
+                                  "OBSERVAÇÕES: " + widget.ordem.observacoes,
+                              style: _textStyle(13.0),
+                            ),
+                          ),
+                          Divider(
+                            thickness: 0.5,
+                            color: Color(0xffEE162D),
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
               ),
@@ -283,7 +314,6 @@ class _SeeNotState extends State<SeeNot> {
           ),
         ),
       ),
-
     );
   }
 }

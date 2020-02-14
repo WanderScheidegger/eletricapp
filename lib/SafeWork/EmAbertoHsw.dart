@@ -23,6 +23,42 @@ class _EmAbertoHswState extends State<EmAbertoHsw> {
     );
   }
 
+  static _displayDialog_Ok(BuildContext context, item) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Tem certeza que deseja deletar a notificação? Todos os dados serão perdidos",
+              style: TextStyle(
+                fontFamily: "EDP Preon",
+                fontSize: 12,
+                color: Color(0xff9E0616),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Deletar'),
+                onPressed: () async {
+                  await db
+                      .collection('OST')
+                      .document(item.documentID)
+                      .delete();
+
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   StreamBuilder stream = StreamBuilder(
       stream: db
           .collection("OST")
@@ -143,6 +179,8 @@ class _EmAbertoHswState extends State<EmAbertoHsw> {
                         ordem.supervisor = item["supervisor"];
                         ordem.matSupervisor = item["matSupervisor"];
                         ordem.ciencia = item["ciencia"];
+                        ordem.zdata_finaliza = item["zdata_finaliza"];
+                        ordem.observacoes = item["observacoes"];
 
                         return Card(
                           elevation: 8,
@@ -203,6 +241,23 @@ class _EmAbertoHswState extends State<EmAbertoHsw> {
                                           Navigator.pushReplacementNamed(
                                               context, "/seenot",
                                               arguments: ordem);
+
+                                        }),
+                                    RaisedButton(
+                                        child: Text(
+                                          "Deletar",
+                                          style: TextStyle(
+                                            fontFamily: "EDP Preon",
+                                            fontSize: 9,
+                                            color: Color(0xffffffff),
+                                          ),
+                                        ),
+                                        color: Color(0xffEE162D),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        onPressed: () {
+                                          _displayDialog_Ok(context, item);
 
                                         }),
 

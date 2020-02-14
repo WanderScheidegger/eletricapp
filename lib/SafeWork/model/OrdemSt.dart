@@ -36,6 +36,8 @@ class OrdemSt{
   String _supervisor;
   String _matSupervisor;
   String _ciencia;
+  String _observacoes;
+  String _zdata_finaliza;
 
 
   Map<String, dynamic> toMap(){
@@ -74,13 +76,27 @@ class OrdemSt{
       "responsavel" : this._responsavel,
       "supervisor" : this._supervisor,
       "matSupervisor" : this._matSupervisor,
-      "ciencia" : this._ciencia
+      "ciencia" : this._ciencia,
+      "observacoes" : this._observacoes,
+      "zdata_finaliza" : this._zdata_finaliza
     };
     return map;
   }
 
   OrdemSt();
 
+
+  String get zdata_finaliza => _zdata_finaliza;
+
+  set zdata_finaliza(String value) {
+    _zdata_finaliza = value;
+  }
+
+  String get observacoes => _observacoes;
+
+  set observacoes(String value) {
+    _observacoes = value;
+  }
 
   String get em_aberto => _em_aberto;
 

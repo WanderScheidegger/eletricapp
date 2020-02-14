@@ -1,107 +1,152 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
-import 'package:eletricapp/model/Ordem.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Aexecutaror extends StatefulWidget {
+import 'model/OrdemRot.dart';
+
+class EmexecucaoRot extends StatefulWidget {
   @override
-  _AexecutarorState createState() => _AexecutarorState();
+  _EmexecucaoRotState createState() => _EmexecucaoRotState();
 }
 
-class _AexecutarorState extends State<Aexecutaror> {
+class _EmexecucaoRotState extends State<EmexecucaoRot> {
+
   static Firestore db = Firestore.instance;
   static String _equipeLogado = "sem equipe";
   bool _isSemEquipe = true;
+  static ProgressDialog pr;
+  static TextEditingController _controllerObservacoes = TextEditingController();
+
+
+  //padrão de TextStyle
+  static _textStyle(double size) {
+    return TextStyle(
+      fontFamily: "EDP Preon",
+      fontSize: size,
+      color: Color(0xff9E0616),
+    );
+  }
+
+
+  static _tomarCiencia(context, item){
+
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: true);
+    pr.style(
+      message: 'Gravando...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: _textStyle(12.0),
+    );
+
+    pr.show();
+
+    db.collection("roteirizacao")
+        .document(item)
+        .updateData({"observacoes" : _controllerObservacoes.text })
+        .then((onValue){
+      pr.hide();
+
+    }).timeout(Duration(seconds: 15), onTimeout: () {
+      pr.hide();
+      _displayDialog_NOk(context);
+
+    });
+
+  }
 
   //ALERT DIALOG
-  static _displayDialog_Ok(BuildContext context, item) async {
+  static _displayDialog_NOk(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
-              "Tem certeza que deseja iniciar o deslocamento?",
-              style: TextStyle(
-                fontFamily: "EDP Preon",
-                fontSize: 12,
-                color: Color(0xff311B92),
-              ),
+              "Erro ao salvar os dados",
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('Iniciar'),
-                onPressed: () {
-                  DateTime time = Timestamp.now().toDate();
-                  String _timeInicio = formatDate(
-                      time, [dd, '/', mm, '/', yyyy, ' - ', H, ':', nn]);
-                  db
-                      .collection("OR")
-                      .document(item['num_osr'])
-                      .updateData(
-                      {'status': 'Em execução', 'inicio': _timeInicio});
-
-                  Geolocator().getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high
-                  ).then((Position position){
-                    Navigator.of(context).pop();
-                    _displayMapsOption(context, item, position.latitude, position.longitude);
-                  }).timeout(Duration(seconds: 5), onTimeout: () {
-                    Navigator.of(context).pop();
-                    _displayMapsOption(context, item, -20.2109753,-40.2701441);
-                  });
-                },
-              ),
-              FlatButton(
-                child: Text('Cancelar'),
+                child: Text('Ok'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-              ),
+              )
             ],
           );
         });
   }
 
+
   //ALERT DIALOG
-  static _displayMapsOption(BuildContext context, item, lat, long) async {
+  static _showDisplayDialog(BuildContext context, item) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
+            contentPadding: EdgeInsets.all(15),
+            elevation: 15.0,
             title: Text(
-              "Qual App deseja iniciar a rota?",
-              style: TextStyle(
-                fontFamily: "EDP Preon",
-                fontSize: 12,
-                color: Color(0xff008B00),
+              "Finalizar a notificação",
+              style: _textStyle(14.0),
+              textAlign: TextAlign.center,
+            ),
+            content: TextField(
+              controller: _controllerObservacoes,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: _textStyle(13.0),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(15),
+                hintText: "Preencha as \n "
+                    "observações para \n "
+                    "finalizar a \n "
+                    "notificação.",
+                filled: true,
+                fillColor: Color(0xffB5B6B3),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
             actions: <Widget>[
-              FlatButton(
-                child: Text('Google Maps'),
-                onPressed: () {
-                  launch(
-                      "https://www.google.com.br/maps/dir/$lat,$long/" +
-                          item['coord_x'] +
-                          "," +
-                          item['coord_y']);
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text('Waze'),
-                onPressed: () {
-                  var latIr = item['coord_x'];
-                  var longIr = item['coord_y'];
-                  launch(
-                      "waze://?ll=$latIr%2C$longIr&navigate=yes&zoom=17"
-                  );
-                  Navigator.of(context).pop();
-                },
-              ),
+              RaisedButton(
+                  child: Text(
+                    "Finalizar",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 9,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Color(0xffEE162D),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _tomarCiencia(context, item);
+                  }),
+              RaisedButton(
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      fontFamily: "EDP Preon",
+                      fontSize: 9,
+                      color: Color(0xffffffff),
+                    ),
+                  ),
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
             ],
           );
         });
@@ -109,9 +154,10 @@ class _AexecutarorState extends State<Aexecutaror> {
 
   StreamBuilder stream = StreamBuilder(
       stream: db
-          .collection("OR")
-          .where('status', isEqualTo: "Atribuída")
+          .collection("roteirizacao")
+          .where('status', isEqualTo: "Em execução")
           .snapshots(),
+
       // ignore: missing_return
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -123,7 +169,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                 style: TextStyle(
                   fontFamily: "EDP Preon",
                   fontSize: 12,
-                  color: Color(0xff311B92),
+                  color: Color(0xff008B00),
                 ),
               ),
             );
@@ -137,7 +183,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                     style: TextStyle(
                       fontFamily: "EDP Preon",
                       fontSize: 12,
-                      color: Color(0xff311B92),
+                      color: Color(0xff008B00),
                     ),
                   ),
                   CircularProgressIndicator(),
@@ -159,13 +205,13 @@ class _AexecutarorState extends State<Aexecutaror> {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        "Você não tem ordens a executar ou houve um erro no carregamento. "
+                        "Você não tem tarefas em execução ou houve um erro no carregamento. "
                             "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "EDP Preon",
                           fontSize: 12,
-                          color: Color(0xff311B92),
+                          color: Color(0xff008B00),
                         ),
                       ),
                     ),
@@ -173,6 +219,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                 ),
               );
             } else {
+
               return Expanded(
                 child: ListView.separated(
                     separatorBuilder: (context, indice) => Divider(
@@ -181,49 +228,33 @@ class _AexecutarorState extends State<Aexecutaror> {
                     ),
                     itemCount: querySnapshot.documents.length,
                     itemBuilder: (context, indice) {
-
                       //Recupara as ordens
                       List<DocumentSnapshot> ordens = querySnapshot.documents
                           .where((snapshot) =>
                       snapshot.data['matricula'] == _equipeLogado || snapshot.data['parceiro'] == _equipeLogado)
                           .toList();
-
                       print("ordens:" + ordens.length.toString());
                       num++;
                       if (ordens.length != 0 && indice<ordens.length){
                         DocumentSnapshot item = ordens[indice];
 
-                        Ordem ordem = Ordem();
+                        OrdemRot ordem = OrdemRot();
 
                         ordem.emissao = item['emissao'];
                         ordem.inicio = item['inicio'];
                         ordem.tempo_atend = item['tempo_atend'];
-                        ordem.num_osr = item['num_osr'];
+                        ordem.num_rot = item['num_rot'];
                         ordem.programacao = item['programacao'];
-                        ordem.obra = item['obra'];
-                        ordem.med_antigo = item['med_antigo'];
-                        ordem.med_inst = item['med_inst'];
-                        ordem.modulo_cs = item['modulo_cs'];
-                        ordem.display = item['display'];
-                        ordem.display_retirado = item['display_retirado'];
-                        ordem.display_instalado = item['display_instalado'];
-                        ordem.cs = item['cs'];
-                        ordem.trafo = item['trafo'];
-                        ordem.anilha = item['anilha'];
-                        ordem.tipo_de_fase = item['tipo_de_fase'];
+                        ordem.diagrama = item['diagrama'];
                         ordem.endereco = item['endereco'];
                         ordem.coord_x = item['coord_x'];
                         ordem.coord_y = item['coord_y'];
-                        ordem.tipo_ordem = item['tipo_ordem'];
                         ordem.observacoes = item['observacoes'];
                         ordem.obs_adm = item['obs_adm'];
                         ordem.matricula = item['matricula'];
                         ordem.status = "Atribuída";
                         ordem.uidcriador = item['uidcriador'];
-                        ordem.execucao = item['execucao'];
-                        ordem.finalizacao = item['finalizacao'];
                         ordem.parceiro = item['parceiro'];
-
 
                         return Card(
                           elevation: 8,
@@ -233,29 +264,29 @@ class _AexecutarorState extends State<Aexecutaror> {
                             children: <Widget>[
                               ListTile(
                                 title: Text(
-                                  "OSR: " + item['num_osr'],
+                                  "Número: " + item['num_rot'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                                 subtitle: Text(
-                                  "Obra: " + item['obra'] +
+                                  "Diagrama: " + item['diagrama'] +
                                       " \n" +
                                       "Prog.: " +
                                       item['programacao'] +
                                       "\n" +
-                                      "Tipo: " +
-                                      item['tipo_ordem'],
+                                      "Endereço: " +
+                                      item['endereco'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                                 trailing: Text(
-                                      "Sit: " +
+                                  "Sit: " +
                                       item['status'],
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
@@ -269,37 +300,38 @@ class _AexecutarorState extends State<Aexecutaror> {
                                   children: <Widget>[
                                     RaisedButton(
                                         child: Text(
-                                          "Visualizar",
+                                          "Finalizar a ordem",
                                           style: TextStyle(
                                             fontFamily: "EDP Preon",
                                             fontSize: 9,
                                             color: Color(0xffffffff),
                                           ),
                                         ),
-                                        color: Color(0xff9FA8DA),
+                                        color: Colors.yellow,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
-                                              context, "/verordemor",
+                                              context, "/finalizaor",
                                               arguments: ordem);
                                         }),
                                     RaisedButton(
                                         child: Text(
-                                          "Iniciar deslocamento",
+                                          "Rota",
                                           style: TextStyle(
                                             fontFamily: "EDP Preon",
                                             fontSize: 9,
                                             color: Color(0xffffffff),
                                           ),
                                         ),
-                                        color: Colors.green,
+                                        color: Color(0xff61D800),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         onPressed: () {
-                                          _displayDialog_Ok(context, item);
+                                          //_displayDialog_Ok(context, item);
+                                          _displayMapsOption(context, item);
                                         }),
                                   ],
                                 ),
@@ -307,8 +339,8 @@ class _AexecutarorState extends State<Aexecutaror> {
                             ],
                           ),
                         );
-                      }
-                      else if(ordens.length==0 && num==1) {
+
+                      }else if(ordens.length==0 && num==1){
                         return Card(
                           elevation: 8,
                           color: Color(0xffBDBDBD),
@@ -317,21 +349,20 @@ class _AexecutarorState extends State<Aexecutaror> {
                             children: <Widget>[
                               ListTile(
                                 title: Text(
-                                  "Você não tem ordens a executar ou houve um erro no carregamento. "
+                                  "Você não tem tarefas em execução ou houve um erro no carregamento. "
                                       "Recarregue navegando para a aba seguinte e retornando para a aba atual.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "EDP Preon",
                                     fontSize: 12,
-                                    color: Color(0xff311B92),
+                                    color: Color(0xff008B00),
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         );
-                      }
-                      else{
+                      } else{
                         return null;
                       }
                     }),
@@ -355,13 +386,86 @@ class _AexecutarorState extends State<Aexecutaror> {
       setState(() {
         _isSemEquipe = false;
       });
-    }else{
+    }else {
       setState(() {
         _isSemEquipe = true;
       });
     }
   }
 
+  //ALERT DIALOG
+  static _displayMapsOption(BuildContext context, item) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Qual App deseja iniciar a rota?",
+              style: TextStyle(
+                fontFamily: "EDP Preon",
+                fontSize: 12,
+                color: Color(0xff008B00),
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Google Maps'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _openMaps(item);
+                },
+              ),
+              FlatButton(
+                child: Text('Waze'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _openWaze(item);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  static _openMaps(item){
+
+    Geolocator().getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+    ).then((Position position){
+
+      var Lat = position.latitude;
+      var Long = position.longitude;
+
+      launch(
+          "https://www.google.com.br/maps/dir/$Lat,$Long/" +
+              item['coord_x'] +
+              "," +
+              item['coord_y']);
+
+    }).timeout(Duration(seconds: 10), onTimeout: () {
+
+    });
+
+  }
+
+  static _openWaze(item){
+
+    Geolocator().getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+    ).then((Position position){
+
+      var latIr = item['coord_x'];
+      var longIr = item['coord_y'];
+
+      launch(
+          "waze://?ll=$latIr%2C$longIr&navigate=yes&zoom=17"
+      );
+
+    }).timeout(Duration(seconds: 10), onTimeout: () {
+
+    });
+
+  }
 
   @override
   void initState() {
@@ -391,7 +495,7 @@ class _AexecutarorState extends State<Aexecutaror> {
                       style: TextStyle(
                         fontFamily: "EDP Preon",
                         fontSize: 12,
-                        color: Color(0xff311B92),
+                        color: Color(0xff008B00),
                       ),
                     ),
                   ),

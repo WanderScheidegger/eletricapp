@@ -107,9 +107,16 @@ class _LoadPageState extends State<LoadPage> {
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: Image.asset("images/anima.gif",
-                    width: 150, height: 185),
+                    width: 256, height: 144),
               ),
-              CircularProgressIndicator(),
+              Text(
+                "Inicializando o aplicativo...",
+                style: TextStyle(
+                  fontFamily: "EDP Preon",
+                  fontSize: 15,
+                  color: Color(0xff9E0616),
+                ),
+              ),
             ],
           ),
         ),

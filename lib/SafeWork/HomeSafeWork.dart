@@ -173,11 +173,12 @@ class _HomeSafeWorkState extends State<HomeSafeWork>
             ),
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage("images/almoxarifado.png"),
+                backgroundImage: AssetImage("images/roteirizador.png"),
               ),
-              title: Text('Almoxarifado'),
+              title: Text('Roteiro'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, "/homeroteiriza", (_) => false);
               },
             ),
             ListTile(

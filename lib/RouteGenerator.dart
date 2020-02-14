@@ -1,7 +1,8 @@
 import 'package:eletricapp/Almoxarifado/Diagrama.dart';
+import 'package:eletricapp/Roteirizacao/HomeRoteiriza.dart';
+import 'package:eletricapp/SafeWork/FinalizaNotifica.dart';
 import 'package:eletricapp/SafeWork/HomeSafeWork.dart';
 import 'package:eletricapp/SafeWork/NotificaPess.dart';
-import 'package:eletricapp/SafeWork/NotificaVeic.dart';
 import 'package:eletricapp/SafeWork/SeeNot.dart';
 import 'package:eletricapp/telas/AdmOR.dart';
 import 'package:eletricapp/telas/Cadastro.dart';
@@ -61,15 +62,16 @@ class RouteGenerator{
       case "/homesafework":
         return MaterialPageRoute(builder: (_) => HomeSafeWork());
 
-      case "/notificaveic":
-        return MaterialPageRoute(builder: (_) => NotificaVeic());
+      case "/finalizanotifica":
+        return MaterialPageRoute(builder: (_) => FinalizaNotifica(args));
       case "/notificapess":
         return MaterialPageRoute(builder: (_) => NotificaPess());
       case "/seenot":
         return MaterialPageRoute(builder: (_) => SeeNot(args));
 
-        //----------------------------------------------------------------------
-
+        //------------------------ Roteirizador---------------------------------
+      case "/homeroteiriza":
+        return MaterialPageRoute(builder: (_) => HomeRoteiriza());
 
     }
 

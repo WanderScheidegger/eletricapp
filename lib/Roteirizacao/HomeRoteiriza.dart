@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:eletricapp/Roteirizacao/AexecutarRot.dart';
+import 'package:eletricapp/Roteirizacao/EmexecucaoRot.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,16 +9,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Aexecutaror.dart';
-import 'EmExecucaoor.dart';
-import 'Executadasor.dart';
+import 'ExecutadasRot.dart';
 
-class Home extends StatefulWidget {
+class HomeRoteiriza extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeRoteirizaState createState() => _HomeRoteirizaState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _HomeRoteirizaState extends State<HomeRoteiriza> with SingleTickerProviderStateMixin {
   TabController _tabController;
   TextEditingController _dialogController = TextEditingController();
   String _textoAalerta = "Digite a senha de Administrador";
@@ -84,7 +84,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return TextStyle(
       fontFamily: "EDP Preon",
       fontSize: size,
-      color: Color(0xff311B92),
+      color: Color(0xff008B00),
     );
   }
 
@@ -202,7 +202,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Ordens de reclamação",
+          "Roteirizador",
           style: TextStyle(
             fontFamily: "EDP Preon",
             fontSize: 18,
@@ -212,7 +212,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
-        backgroundColor: Color(0xff9FA8DA),
+        backgroundColor: Color(0xff61D800),
         bottom: TabBar(
           controller: _tabController,
           indicatorWeight: 2,
@@ -257,10 +257,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/pendencia.png"),
+                  image: AssetImage("images/roteirizador.png"),
                   fit: BoxFit.none,
                 ),
-                color: Color(0xff9FA8DA),
+                color: Color(0xff61D800),
               ),
               child: Text(
                 '\n\nELETRIC',
@@ -269,16 +269,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   fontSize: 24,
                 ),
               ),
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage("images/roteirizador.png"),
-              ),
-              title: Text('Roteiro'),
-              onTap: (){
-                Navigator.pop(context);
-                Navigator.pushNamedAndRemoveUntil(context, "/homeroteiriza", (_) => false);
-              },
             ),
             ListTile(
               leading: CircleAvatar(
@@ -333,9 +323,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Aexecutaror(),
-          EmExecucaoor(),
-          Executadasor(),
+          AexecutarRot(),
+          EmexecucaoRot(),
+          ExecutadasRot(),
         ],
       ),
     );

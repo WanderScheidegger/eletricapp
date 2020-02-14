@@ -151,6 +151,8 @@ class _NotificaPessState extends State<NotificaPess> {
       ordem.ciencia = _ciencia;
       ordem.data_ciencia = "";
       ordem.em_aberto = "Sim";
+      ordem.observacoes = "";
+      ordem.zdata_finaliza = "";
 
       //------------------------------------------------------------------------
       ordem.risco1 = _potencialRisco1;
@@ -245,6 +247,8 @@ class _NotificaPessState extends State<NotificaPess> {
       ordem.ciencia = _ciencia;
       ordem.data_ciencia = "";
       ordem.em_aberto = "Sim";
+      ordem.observacoes = "";
+      ordem.zdata_finaliza = "";
 
       //------------------------------------------------------------------------
       ordem.risco1 = _potencialRisco1;
@@ -424,7 +428,7 @@ class _NotificaPessState extends State<NotificaPess> {
                   child: TextField(
                     controller: _nomeController,
                     keyboardType: TextInputType.text,
-                    style: _textStyle(11.5),
+                    style: _textStyle(12.5),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(15),
                       hintText: "Nome do notificado",
@@ -441,7 +445,7 @@ class _NotificaPessState extends State<NotificaPess> {
                   child: TextField(
                     controller: _sobreNomeController,
                     keyboardType: TextInputType.text,
-                    style: _textStyle(11.5),
+                    style: _textStyle(12.5),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(15),
                       hintText: "sobrenome do notificado",
@@ -458,7 +462,7 @@ class _NotificaPessState extends State<NotificaPess> {
                   child: TextField(
                     controller: _matriculaController,
                     keyboardType: TextInputType.text,
-                    style: _textStyle(11.5),
+                    style: _textStyle(12.5),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(15),
                       hintText: "matrícula do notificado",
@@ -525,7 +529,7 @@ class _NotificaPessState extends State<NotificaPess> {
                     child: TextField(
                       controller: _placaController,
                       keyboardType: TextInputType.text,
-                      style: _textStyle(11.5),
+                      style: _textStyle(12.5),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(15),
                         hintText: "Placa do veículo",
